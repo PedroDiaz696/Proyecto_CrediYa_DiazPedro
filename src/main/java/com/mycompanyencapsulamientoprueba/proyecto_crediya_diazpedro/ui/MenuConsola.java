@@ -5,7 +5,10 @@
 package com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.ui;
 
 import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.model.Cliente;
+import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.model.Empleado;
+import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.model.RolEmpleado;
 import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.service.ClienteService;
+import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.service.EmpleadoService;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,10 +19,13 @@ import java.util.Scanner;
 public class MenuConsola {
     private final Scanner scanner;
     private final ClienteService clienteService;
-
+    private final EmpleadoService empleadoService;
+    
+    
     public MenuConsola() {
         scanner = new Scanner(System.in);
         clienteService = new ClienteService();
+        empleadoService = new EmpleadoService();
     }
 
     public void iniciar() {
@@ -29,7 +35,8 @@ public class MenuConsola {
         do {
             System.out.println("\n===== CREDIYA =====");
             System.out.println("1. Clientes");
-            System.out.println("2. Salir");
+            System.out.println("2. Empleados");
+            System.out.println("3. Salir");
             System.out.print("Seleccione una opción: ");
 
             opcion = scanner.nextInt();
@@ -41,6 +48,10 @@ public class MenuConsola {
                     break;
 
                 case 2:
+                    menuEmpleados();
+                    break;
+
+                case 3:
                     System.out.println("Saliendo del sistema...");
                     break;
 
@@ -48,7 +59,7 @@ public class MenuConsola {
                     System.out.println("Opción inválida.");
             }
 
-        } while (opcion != 2);
+        } while (opcion != 3);
     }
 
     private void menuClientes() {
@@ -131,6 +142,122 @@ public class MenuConsola {
                     cliente.getDocumento() + " | " +
                     cliente.getCorreo() + " | " +
                     cliente.getTelefono()
+            );
+        }
+    }
+
+    private void menuEmpleados() {
+
+        int opcion;
+
+        do {
+            System.out.println("\n===== EMPLEADOS =====");
+            System.out.println("1. Registrar empleado");
+            System.out.println("2. Listar empleados");
+            System.out.println("3. Volver");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcion) {
+                case 1:
+                    registrarEmpleado();
+                    break;
+
+                case 2:
+                    listarEmpleados();
+                    break;
+
+                case 3:
+                    break;
+
+                default:
+                    System.out.println("Opción inválida.");
+            }
+
+        } while (opcion != 3);
+    }
+
+    private void registrarEmpleado() {
+
+        System.out.println("\n===== REGISTRAR EMPLEADO =====");
+
+        System.out.print("Nombre: ");
+        String nombre = scanner.nextLine();
+
+        System.out.print("Documento: ");
+        String documento = scanner.nextLine();
+
+        System.out.print("Correo: ");
+        String correo = scanner.nextLine();
+
+        System.out.print("Salario: ");
+        double salario = scanner.nextDouble();
+        scanner.nextLine();
+
+        System.out.println("Roles disponibles:");
+        System.out.println("1. ADMINISTRADOR");
+        System.out.println("2. ASESOR");
+        System.out.println("3. COBRADOR");
+        System.out.print("Seleccione un rol: ");
+
+        int opcionRol = scanner.nextInt();
+        scanner.nextLine();
+
+        RolEmpleado rol;
+
+        switch (opcionRol) {
+            case 1:
+                rol = RolEmpleado.ADMINISTRADOR;
+                break;
+
+            case 2:
+                rol = RolEmpleado.ASESOR;
+                break;
+
+            case 3:
+                rol = RolEmpleado.COBRADOR;
+                break;
+
+            default:
+                System.out.println("Rol inválido.");
+                return;
+        }
+
+        Empleado empleado = new Empleado(
+                0,
+                nombre,
+                documento,
+                correo,
+                rol,
+                salario
+        );
+
+        empleadoService.registrarEmpleado(empleado);
+
+        System.out.println("Empleado registrado correctamente.");
+    }
+
+    private void listarEmpleados() {
+
+        System.out.println("\n===== LISTA DE EMPLEADOS =====");
+
+        List<Empleado> empleados = empleadoService.listarEmpleados();
+
+        if (empleados.isEmpty()) {
+            System.out.println("No hay empleados registrados.");
+            return;
+        }
+
+        for (Empleado empleado : empleados) {
+            System.out.println(
+                    empleado.getId() + " | " +
+                    empleado.getNombre() + " | " +
+                    empleado.getDocumento() + " | " +
+                    empleado.getRol() + " | " +
+                    empleado.getCorreo() + " | $" +
+                    empleado.getSalario()
             );
         }
     }
