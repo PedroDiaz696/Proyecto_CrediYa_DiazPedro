@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.model;
 
 /**
@@ -36,5 +32,10 @@ public class Empleado extends Persona{
 
     public void setSalario(double salario) {
         this.salario = salario;
+    }
+
+    @Override
+    public String mostrarInformacion() {
+        return super.mostrarInformacion() + " | " + rol + " | " + String.format("$%,.2f", salario);
     }
 }

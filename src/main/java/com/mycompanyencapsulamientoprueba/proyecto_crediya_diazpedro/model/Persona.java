@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.model;
 
 /**
@@ -54,5 +50,13 @@ public abstract class Persona {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    /**
+     * Datos comunes a toda persona. Cliente y Empleado sobrescriben este
+     * método (polimorfismo) y agregan sus propios datos usando super.
+     */
+    public String mostrarInformacion() {
+        return id + " | " + nombre + " | " + documento + " | " + correo;
     }
 }
